@@ -40,7 +40,6 @@ float determinant(float a[8][8], float k)
 
 void transpose(float out[8][8], float num[8][8], float fac[8][8], float r)
 {
-    int i, j;
     float b[8][8], d;
 
     for (int i = 0; i < r; i++)
