@@ -24,7 +24,7 @@ q7: clean_q7 setup
 	cd $(Q7BINDIR) && \
 	  ./q7.out > /dev/null
 	gprof $(Q7BINDIR)/q7.out $(Q7BINDIR)/gmon.out > $(Q7RESULTDIR)/q7.stats
-	gprof2dot $(Q7RESULTDIR)/q7.stats > $(Q7RESULTDIR)/q7.dot
+	gprof2dot --node-thres=0 --edge-thres=0 $(Q7RESULTDIR)/q7.stats > $(Q7RESULTDIR)/q7.dot
 	dot -Tps  $(Q7RESULTDIR)/q7.dot > $(Q7RESULTDIR)/q7.eps
 	dot -Tpng $(Q7RESULTDIR)/q7.dot > $(Q7RESULTDIR)/q7.png
 
