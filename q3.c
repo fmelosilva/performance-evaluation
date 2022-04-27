@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <math.h>
+#include <time.h>
 
 float determinant(float a[8][8], float k)
 {
@@ -38,7 +39,7 @@ float determinant(float a[8][8], float k)
     return det;
 }
 
-void transpose(float out[8][8], float num[8][8], float fac[8][8], float r)
+int transpose(float out[8][8], float num[8][8], float fac[8][8], float r)
 {
     float b[8][8], d;
 
@@ -51,6 +52,10 @@ void transpose(float out[8][8], float num[8][8], float fac[8][8], float r)
     }
 
     d = determinant(num, r);
+    if (d <= 0)
+    {
+        return -1;
+    }
     for (int i = 0; i < r; i++)
     {
         for (int j = 0; j < r; j++)
@@ -58,9 +63,11 @@ void transpose(float out[8][8], float num[8][8], float fac[8][8], float r)
             out[i][j] = b[i][j] / d;
         }
     }
+
+    return 0;
 }
 
-void cofactor(float out[8][8], float num[8][8], float f)
+int cofactor(float out[8][8], float num[8][8], float f)
 {
     float b[8][8], fac[8][8];
     for (int q = 0; q < f; q++)
@@ -88,7 +95,8 @@ void cofactor(float out[8][8], float num[8][8], float f)
             fac[q][p] = pow(-1, q + p) * determinant(b, f - 1);
         }
     }
-    transpose(out, num, fac, f);
+
+    return transpose(out, num, fac, f);
 }
 
 void print_matrix(float matrix[8][8])
@@ -111,17 +119,29 @@ void print_matrix(float matrix[8][8])
 int main(int argc, char const *argv[])
 {
     int n = 8;
-    float out[8][8], in[8][8] = {{4.85, 0.85, 1.88, 4.29, 8.05, 7.46, 7.01, 3.66},
-                                 {4.54, 6.55, 5.81, 7.85, 8.88, 4.91, 7.90, 1.17},
-                                 {5.86, 1.53, 8.58, 3.29, 7.93, 1.15, 1.36, 0.15},
-                                 {3.37, 1.26, 5.27, 8.94, 2.79, 5.58, 8.81, 6.87},
-                                 {1.74, 4.90, 1.04, 7.79, 4.22, 7.00, 0.67, 0.57},
-                                 {4.03, 6.62, 2.52, 0.49, 4.96, 3.78, 5.70, 7.21},
-                                 {4.04, 4.25, 0.47, 5.29, 1.62, 4.27, 1.16, 4.63},
-                                 {5.53, 7.21, 8.68, 3.33, 5.74, 4.09, 7.80, 0.72}};
+    float out[8][8], in[8][8];
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            scanf("%f", &in[i][j]);
+        }
+    }
 
+    if (determinant(in, n) == 0)
+    {
+        printf("\nInverse of Entered Matrix is not possible\n");
+        return 0;
+    }
+
+    clock_t start = clock();
     cofactor(out, in, n);
+    double cpu_time_used = ((double)(clock() - start)) / CLOCKS_PER_SEC;
+
+    printf("inverse matrix:\n");
     print_matrix(out);
+    printf("-------------\n");
+    printf("time elapsed: %lf\n", cpu_time_used);
 
     return 0;
 }

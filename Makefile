@@ -15,6 +15,7 @@ q3: Q3RESULTDIR:=$(RESULTDIR)/q3
 q3: clean_q3 setup
 	mkdir -p $(Q3BINDIR) $(Q3RESULTDIR)
 	gcc q3.c $(FLAGS) -lm -o $(Q3BINDIR)/q3.out
+	bash q3.sh > $(Q3RESULTDIR)/time.csv
 
 q7: Q7BINDIR:=$(BINDIR)/q7
 q7: Q7RESULTDIR:=$(RESULTDIR)/q7
